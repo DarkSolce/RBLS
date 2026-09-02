@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RavenWood Rebellion — Alliance HQ</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☣️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#13100d;
+    --bg-2:#0d0b09;
+    --surface:#1c1712;
+    --surface-2:#241d16;
+    --surface-3:#2c231a;
+    --border:#3a2f22;
+    --border-soft:#2a221a;
+    --text:#ece4d6;
+    --text-dim:#a89880;
+    --text-faint:#6f6151;
+    --accent:#4f948c;
+    --accent-soft:#2c4744;
+    --accent-2:#b3763f;
+    --danger:#b0503f;
+    --danger-soft:#3a2420;
+    --warning:#c9a23f;
+    --warning-soft:#3a3120;
+    --good:#6a9c5f;
+    --good-soft:#26331f;
+    --shadow: 0 10px 30px rgba(0,0,0,.45);
+    --radius: 3px;
+    --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(79,148,140,.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(179,118,63,.08), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft);color:var(--text);}
+  a{color:var(--accent);}
+  button{font-family:inherit;}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg-2);}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px;}
+
+  .tabular{font-variant-numeric:tabular-nums;}
+
+  #app{max-width:1080px;margin:0 auto;padding:0 20px 80px;}
+
+  .masthead{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:18px 0 14px;border-bottom:1px solid var(--border-soft);
+    flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+  .brand-badge{
+    width:42px;height:42px;flex:none;border-radius:50%;
+    background:var(--surface-2);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:20px;
+  }
+  .brand-text{min-width:0;}
+  .brand-name{
+    font-family:var(--font-display);letter-spacing:.04em;
+    font-size:24px;line-height:1.05;color:var(--text);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw;
+  }
+  .brand-tag{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;
+    color:var(--text-faint);text-transform:uppercase;
+  }
+  .masthead-right{display:flex;align-items:center;gap:10px;}
+  .last-updated{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);text-align:right;}
+  .last-updated b{color:var(--text-dim);font-weight:500;}
+  .conn-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--text-faint);margin-right:5px;}
+  .conn-dot.live{background:var(--good);}
+  .conn-dot.err{background:var(--danger);}
+
+  .btn{
+    appearance:none;border:1px solid var(--border);background:var(--surface-2);
+    color:var(--text);font-size:13px;font-weight:500;padding:8px 14px;
+    border-radius:var(--radius);cursor:pointer;transition:background .12s,border-color .12s;
+    display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  }
+  .btn:hover{background:var(--surface-3);border-color:var(--text-faint);}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .btn-primary{background:var(--accent-soft);border-color:var(--accent);color:#d8ede9;}
+  .btn-primary:hover{background:#33544f;}
+  .btn-danger{background:var(--danger-soft);border-color:var(--danger);color:#f0d4cd;}
+  .btn-danger:hover{background:#45291f;}
+  .btn-ghost{background:transparent;border-color:transparent;color:var(--text-dim);}
+  .btn-ghost:hover{background:var(--surface-2);color:var(--text);}
+  .btn-sm{padding:5px 10px;font-size:12px;}
+  .btn-block{width:100%;justify-content:center;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  .hero{padding:26px 0 8px;}
+  .hero-eyebrow{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent-2);margin:0 0 6px;
+  }
+  .hero h1{
+    font-family:var(--font-display);font-weight:400;letter-spacing:.02em;
+    font-size:clamp(34px,6vw,54px);margin:0 0 6px;text-wrap:balance;color:var(--text);
+  }
+  .hero p{margin:0;color:var(--text-dim);font-size:14px;max-width:60ch;}
+
+  .tabs{display:flex;gap:2px;margin:22px 0 0;border-bottom:1px solid var(--border-soft);}
+  .tab{
+    appearance:none;background:transparent;border:none;border-bottom:2px solid transparent;
+    color:var(--text-faint);font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;
+    text-transform:uppercase;padding:11px 4px;margin-right:22px;cursor:pointer;
+  }
+  .tab:hover{color:var(--text-dim);}
+  .tab.active{color:var(--text);border-bottom-color:var(--accent-2);}
+  .tab .count{color:var(--text-faint);font-size:11px;}
+
+  .tab-panel{display:none;padding-top:22px;}
+  .tab-panel.active{display:block;}
+
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .panel-title{font-family:var(--font-display);font-size:20px;letter-spacing:.02em;color:var(--text);}
+  .panel-sub{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);letter-spacing:.06em;}
+
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+  .search-wrap{position:relative;flex:1;min-width:180px;}
+  .search-wrap input{
+    width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);
+    padding:9px 12px 9px 30px;border-radius:var(--radius);font-size:13px;font-family:var(--font-body);
+  }
+  .search-wrap input:focus{outline:none;border-color:var(--accent);}
+  .search-wrap::before{
+    content:"⌕";position:absolute;left:10px;top:50%;transform:translateY(-52%);color:var(--text-faint);font-size:15px;
+  }
+  .toggle{
+    display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text-dim);
+    background:var(--surface);border:1px solid var(--border);padding:8px 12px;border-radius:var(--radius);
+    cursor:pointer;user-select:none;
+  }
+  .toggle input{accent-color:var(--accent);}
+  select.select{
+    background:var(--surface);border:1px solid var(--border);color:var(--text);
+    padding:8px 10px;border-radius:var(--radius);font-size:12px;font-family:var(--font-mono);
+  }
+
+  .member-row{
+    background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
+    margin-bottom:6px;overflow:hidden;
+  }
+  .member-row-main{
+    display:grid;grid-template-columns:30px 1fr auto auto auto 90px 20px;
+    gap:14px;align-items:center;padding:11px 12px;cursor:pointer;
+  }
+  .member-rank{font-family:var(--font-mono);color:var(--text-faint);font-size:12px;text-align:right;}
+  .member-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+  .member-name .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--good);margin-right:7px;vertical-align:middle;}
+  .member-name.is-inactive .status-dot{background:var(--text-faint);}
+  .member-level{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);white-space:nowrap;}
+  .rank-tag{display:inline-block;background:var(--surface-3);border:1px solid var(--border);color:var(--accent-2);font-size:9.5px;padding:1px 4px;border-radius:2px;letter-spacing:.03em;}
+  .member-power{font-family:var(--font-mono);font-weight:600;font-size:14px;text-align:right;white-space:nowrap;}
+  .member-delta{font-family:var(--font-mono);font-size:11px;text-align:right;white-space:nowrap;min-width:74px;}
+  .member-delta.up{color:var(--good);}
+  .member-delta.down{color:var(--danger);}
+  .member-delta.flat{color:var(--text-faint);}
+  .badge{
+    font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 6px;border-radius:2px;border:1px solid;white-space:nowrap;
+  }
+  .badge-good{color:#bfe0b3;border-color:var(--good);background:var(--good-soft);}
+  .badge-warn{color:#e8d49b;border-color:var(--warning);background:var(--warning-soft);}
+  .badge-bad{color:#f0c1b5;border-color:var(--danger);background:var(--danger-soft);}
+  .badge-mute{color:var(--text-faint);border-color:var(--border);background:transparent;}
+  .member-caret{color:var(--text-faint);text-align:center;transition:transform .15s;}
+  .member-row.expanded .member-caret{transform:rotate(180deg);}
+  .member-detail{display:none;padding:0 16px 16px;border-top:1px solid var(--border-soft);}
+  .member-row.expanded .member-detail{display:block;}
+  .member-detail-inner{display:flex;gap:20px;align-items:flex-end;padding-top:14px;flex-wrap:wrap;}
+  .spark-wrap{flex:1;min-width:220px;}
+  .spark-label{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+  .member-detail-stats{display:flex;gap:18px;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);flex-wrap:wrap;}
+  .member-detail-stats b{display:block;color:var(--text);font-size:14px;font-weight:600;}
+  .member-detail-actions{display:flex;gap:8px;margin-left:auto;}
+
+  .empty-state{
+    text-align:center;padding:52px 20px;color:var(--text-dim);
+    border:1px dashed var(--border);border-radius:var(--radius);background:var(--surface);
+  }
+  .empty-state .glyph{font-size:26px;margin-bottom:10px;opacity:.7;}
+  .empty-state p{margin:4px 0 16px;font-size:13px;}
+
+  .org-tree{list-style:none;margin:0;padding:0;}
+  .org-tree ul{list-style:none;margin:0;padding-left:26px;border-left:1px solid var(--border-soft);}
+  .org-node{margin:8px 0;}
+  .org-card{
+    display:inline-flex;align-items:center;gap:10px;background:var(--surface);
+    border:1px solid var(--border);border-radius:var(--radius);padding:9px 13px;
+    min-width:180px;
+  }
+  .org-card .initial{
+    width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:#cfe8e3;
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;flex:none;
+  }
+  .org-card .org-name{font-weight:600;font-size:13.5px;}
+  .org-card .org-role{font-family:var(--font-mono);font-size:10px;color:var(--accent-2);letter-spacing:.06em;text-transform:uppercase;}
+  .org-card .org-edit{margin-left:auto;color:var(--text-faint);background:none;border:none;cursor:pointer;padding:2px 4px;}
+  .org-card .org-edit:hover{color:var(--text);}
+  .org-empty-hint{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);margin-top:10px;}
+
+  .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+  .event-card{
+    background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
+    padding:16px;position:relative;
+  }
+  .event-card.is-inactive{opacity:.55;}
+  .event-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+  .event-icon{font-size:22px;}
+  .event-status{
+    font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 7px;border-radius:2px;border:1px solid;
+  }
+  .event-status.active{color:#bfe0b3;border-color:var(--good);background:var(--good-soft);}
+  .event-status.inactive{color:var(--text-faint);border-color:var(--border);}
+  .event-name{font-weight:600;font-size:14.5px;margin:12px 0 4px;}
+  .event-assignee{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
+  .event-assignee.unassigned{color:var(--warning);}
+  .event-actions{position:absolute;top:10px;right:10px;display:none;gap:4px;}
+  .event-card:hover .event-actions{display:flex;}
+
+  .scrim{position:fixed;inset:0;background:rgba(8,6,4,.6);z-index:40;display:none;}
+  .scrim.open{display:block;}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);background:var(--bg-2);
+    border-left:1px solid var(--border);z-index:41;transform:translateX(100%);
+    transition:transform .2s ease;display:flex;flex-direction:column;box-shadow:var(--shadow);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-soft);}
+  .drawer-head h2{font-family:var(--font-display);font-size:19px;font-weight:400;margin:0;letter-spacing:.02em;}
+  .drawer-body{flex:1;overflow-y:auto;padding:18px;}
+  .drawer-close{background:none;border:none;color:var(--text-faint);font-size:20px;cursor:pointer;line-height:1;padding:4px;}
+  .drawer-close:hover{color:var(--text);}
+
+  .admin-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+  .admin-tab{
+    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+    font-size:11.5px;font-family:var(--font-mono);letter-spacing:.03em;padding:6px 10px;
+    border-radius:2px;cursor:pointer;
+  }
+  .admin-tab.active{background:var(--accent-soft);border-color:var(--accent);color:#d8ede9;}
+  .admin-section{display:none;}
+  .admin-section.active{display:block;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:11.5px;color:var(--text-dim);margin-bottom:5px;font-family:var(--font-mono);letter-spacing:.03em;}
+  .field input[type=text],.field input[type=password],.field input[type=email],.field input[type=number],.field input[type=date],.field select,.field textarea{
+    width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);
+    padding:9px 10px;border-radius:var(--radius);font-size:13.5px;font-family:var(--font-body);
+  }
+  .field textarea{font-family:var(--font-mono);font-size:12.5px;min-height:120px;resize:vertical;}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);}
+  .field-hint{font-size:11px;color:var(--text-faint);margin-top:5px;}
+  .field-row{display:flex;gap:10px;}
+  .field-row .field{flex:1;}
+
+  .admin-list-item{
+    display:flex;align-items:center;gap:10px;padding:9px 10px;background:var(--surface);
+    border:1px solid var(--border-soft);border-radius:var(--radius);margin-bottom:6px;font-size:13px;
+  }
+  .admin-list-item .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .admin-list-item .meta{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);}
+  .icon-btn{background:none;border:none;color:var(--text-faint);cursor:pointer;padding:3px 5px;font-size:14px;}
+  .icon-btn:hover{color:var(--text);}
+
+  .divider{height:1px;background:var(--border-soft);margin:18px 0;}
+
+  .uid-box{
+    font-family:var(--font-mono);font-size:11.5px;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:9px 10px;word-break:break-all;color:var(--accent-2);
+  }
+
+  .bulk-row{display:grid;grid-template-columns:1fr 90px 60px 80px 24px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px;}
+  .bulk-row input{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:2px;font-size:12px;font-family:var(--font-mono);width:100%;}
+  .bulk-row .match-new{color:var(--warning);font-family:var(--font-mono);font-size:10px;}
+  .bulk-row .match-ok{color:var(--good);font-family:var(--font-mono);font-size:10px;}
+
+  .wizard-wrap{max-width:440px;margin:8vh auto 0;padding:0 20px;}
+  .wizard-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px 26px;box-shadow:var(--shadow);}
+  .wizard-card h1{font-family:var(--font-display);font-size:28px;font-weight:400;margin:0 0 6px;letter-spacing:.02em;}
+  .wizard-card>p{color:var(--text-dim);font-size:13px;margin:0 0 22px;}
+
+  #toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:8px;align-items:center;}
+  .toast{
+    background:var(--surface-3);border:1px solid var(--border);color:var(--text);
+    padding:10px 16px;border-radius:var(--radius);font-size:13px;box-shadow:var(--shadow);
+    animation:toast-in .15s ease;max-width:90vw;
+  }
+  .toast.err{border-color:var(--danger);}
+  .toast.ok{border-color:var(--good);}
+  @keyframes toast-in{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .footer-note{text-align:center;padding:40px 0 10px;font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);letter-spacing:.04em;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;}
+  }
+
+  @media (max-width:560px){
+    .member-row-main{display:flex;flex-wrap:wrap;align-items:center;row-gap:6px;}
+    .member-rank{order:1;width:auto;margin-right:2px;}
+    .member-name{order:2;flex:1 1 auto;min-width:0;}
+    .member-caret{order:3;}
+    .member-level{order:4;flex-basis:100%;}
+    .badge{order:5;}
+    .member-power{order:6;margin-left:auto;text-align:right;}
+    .member-delta{order:7;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="masthead">
+    <div class="brand">
+      <div class="brand-badge">☣️</div>
+      <div class="brand-text">
+        <div class="brand-name" id="brandName">—</div>
+        <div class="brand-tag" id="brandTag">—</div>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <div class="last-updated" id="lastUpdated"><span class="conn-dot" id="connDot"></span><span id="connText">Connecting…</span></div>
+      <button class="btn" id="adminOpenBtn">🔒 Officer Access</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">Last Asylum: Plague — Alliance Dossier</div>
+    <h1 id="heroTitle">—</h1>
+    <p id="heroTagline"></p>
+  </section>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="members">Members <span class="count" id="tabCountMembers"></span></button>
+    <button class="tab" data-tab="orgchart">Leadership</button>
+    <button class="tab" data-tab="events">Events <span class="count" id="tabCountEvents"></span></button>
+  </nav>
+
+  <main>
+    <section class="tab-panel active" id="tab-members">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Member Roster</div>
+          <div class="panel-sub" id="memberPanelSub"></div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="search-wrap"><input type="text" id="memberSearch" placeholder="Search a member…"></div>
+        <select class="select" id="memberSort">
+          <option value="power_desc">Power ↓</option>
+          <option value="power_asc">Power ↑</option>
+          <option value="name_asc">Name A–Z</option>
+          <option value="delta_desc">Gain ↓</option>
+          <option value="delta_asc">Gain ↑ (biggest drop)</option>
+        </select>
+        <label class="toggle"><input type="checkbox" id="showInactive"> Show inactive</label>
+      </div>
+      <div id="memberList"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-orgchart">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Chain of Command</div>
+          <div class="panel-sub">Alliance leadership &amp; officer roles</div>
+        </div>
+      </div>
+      <div id="orgChartWrap"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-events">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Active Incidents</div>
+          <div class="panel-sub">Alliance events &amp; assignment status</div>
+        </div>
+      </div>
+      <div id="eventsWrap"></div>
+    </section>
+  </main>
+
+  <div class="footer-note" id="footerNote"></div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <h2 id="drawerTitle">Officer Access</h2>
+    <button class="drawer-close" id="drawerCloseBtn">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div id="toasts"></div>
+
+<script type="module">
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+  collection, onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import {
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+/* ============================================================
+   0. Firebase config — safe to be public; Firestore security
+   rules (see firestore.rules) are what actually protect writes.
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAikzu28uSmIkL1t9ZEQ3CNQ7edBKNqL6o",
+  authDomain: "rbls-f3a9c.firebaseapp.com",
+  projectId: "rbls-f3a9c",
+  storageBucket: "rbls-f3a9c.firebasestorage.app",
+  messagingSenderId: "871713994532",
+  appId: "1:871713994532:web:a335fb7a56a61e3b46e5b1",
+  measurementId: "G-6953BVHP8F"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+const auth = getAuth(fbApp);
+setPersistence(auth, browserLocalPersistence).catch(function(){});
+
+/* ============================================================
+   0b. Seed data — the real roster/orgchart, offered as a one-time
+   import in the setup wizard so the first officer does not have
+   to re-enter 89 members by hand.
+   ============================================================ */
+const SEED_DATA = {"settings":{"allianceName":"RavenWood Rebellion","allianceTag":"RBLS","tagline":"Force, honor, victory.","staleDays":10},"members":[{"seedId":"mem_mtjk84t0offyu","name":"Mstical","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":120155152,"level":28}]},{"seedId":"mem_sm0ke","name":"Sm0kE","level":null,"status":"active","joinedAt":"2026-09-02","rank":"R5","history":[]},{"seedId":"mem_cutechaosgremlin","name":"CuteChaosGremlin","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":61874186,"level":28}]},{"seedId":"mem_darksolce","name":"DarkSolce","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":92740046,"level":29}]},{"seedId":"mem_n9netailz","name":"N9NEtailz","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":89476486,"level":29}]},{"seedId":"mem_jackle","name":"jackle","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":116938797,"level":29}]},{"seedId":"mem_xenawarrior","name":"☆XenaWarrior☆","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":112297957,"level":30}]},{"seedId":"mem_lordescarlata","name":"LordEscarlata","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":96966219,"level":30}]},{"seedId":"mem_gabriel2008","name":"Gabriel2008","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R4","history":[{"date":"2026-09-02","power":77096297,"level":30}]},{"seedId":"mem_pbandj","name":"PBandJ","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":80764180,"level":28}]},{"seedId":"mem_kingorcus","name":"KingOrcus","level":24,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":47592971,"level":24}]},{"seedId":"mem_dianaava","name":"DianaAva","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":83830713,"level":29}]},{"seedId":"mem_taquitodesal","name":"Taquitodesal","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":88457205,"level":28}]},{"seedId":"mem_grimmysripper","name":"GRiMmYsRiPpEr","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":79400956,"level":28}]},{"seedId":"mem_srkaplan","name":"SrKaplan","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":77000910,"level":29}]},{"seedId":"mem_jenn191","name":"Jenn191","level":23,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":54420448,"level":23}]},{"seedId":"mem_avamateo","name":"AvaMateo","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":99755266,"level":29}]},{"seedId":"mem_bowraven","name":"BowRaven","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":107042852,"level":30}]},{"seedId":"mem_junior10","name":"JUNIOR10","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":94302525,"level":29}]},{"seedId":"mem_samuraix","name":"Samurai-X","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":92443248,"level":30}]},{"seedId":"mem_member","name":"ΛΩΣΠ","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":101006231,"level":29}]},{"seedId":"mem_gely2026","name":"Gely2026","level":22,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":57031146,"level":22}]},{"seedId":"mem_betrbod","name":"betrbod","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":95784028,"level":28}]},{"seedId":"mem_howler","name":"Howler","level":26,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":50922987,"level":26}]},{"seedId":"mem_vixx101","name":"Vixx101","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":83060250,"level":28}]},{"seedId":"mem_drshingo","name":"DrShingo","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":89508041,"level":30}]},{"seedId":"mem_sudteancum","name":"SuDTeAnCuM","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":70845577,"level":29}]},{"seedId":"mem_obviouslemon","name":"ObviousLemon","level":27,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":91079925,"level":27}]},{"seedId":"mem_vdes","name":"Vdes","level":22,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":39270663,"level":22}]},{"seedId":"mem_wife","name":"Wife","level":26,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":43609979,"level":26}]},{"seedId":"mem_nubeblanca","name":"Nubeblanca","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":42363157,"level":25}]},{"seedId":"mem_cilantro","name":"Cilantro","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":71612863,"level":25}]},{"seedId":"mem_jon","name":"-Jon-","level":27,"status":"active","joinedAt":"2026-09-02","rank":"R3","history":[{"date":"2026-09-02","power":36777020,"level":27}]},{"seedId":"mem_nizamlmlk28","name":"Nizamülmülk28","level":26,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":36904435,"level":26}]},{"seedId":"mem_beast81","name":"Beast81","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":98988595,"level":30}]},{"seedId":"mem_whisperix","name":"WhisperIX","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":97223256,"level":30}]},{"seedId":"mem_mimi89","name":"Mimi89","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":65040291,"level":25}]},{"seedId":"mem_ometeotl","name":"Ometeotl","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":78079078,"level":29}]},{"seedId":"mem_deyroder","name":"Deyroder","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":87180046,"level":28}]},{"seedId":"mem_midas","name":"¥Midas¥","level":24,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":37927235,"level":24}]},{"seedId":"mem_szczepcio","name":"SzCzEpCiO","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":63368868,"level":28}]},{"seedId":"mem_drmommad","name":"DrMommaD","level":21,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":46566090,"level":21}]},{"seedId":"mem_nickkieg","name":"NickkieG","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":47309093,"level":25}]},{"seedId":"mem_mazzini92","name":"Mazzini92","level":23,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":56822263,"level":23}]},{"seedId":"mem_anpulsfet","name":"Anpulsfet","level":21,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":28070462,"level":21}]},{"seedId":"mem_vaie","name":"Vaie","level":27,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":76892306,"level":27}]},{"seedId":"mem_frantrolen","name":"Frantrolen","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":81130925,"level":30}]},{"seedId":"mem_doctoraldora","name":"DoctorAldora","level":24,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":41512611,"level":24}]},{"seedId":"mem_kmmy","name":"Kmmy","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":39905167,"level":28}]},{"seedId":"mem_fernando","name":"Fernando•","level":23,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":48930378,"level":23}]},{"seedId":"mem_ohmygold","name":"oh-my-gold","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":52992636,"level":25}]},{"seedId":"mem_dralba","name":"DrAlba","level":27,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":72806030,"level":27}]},{"seedId":"mem_aleksiy","name":"Aleksiy","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":70749997,"level":25}]},{"seedId":"mem_sirthanatos","name":"sirTHANATOS","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":92052578,"level":30}]},{"seedId":"mem_karabela","name":"KaraBela","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":78095205,"level":25}]},{"seedId":"mem_cocobunni","name":"CocoBunni","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":108853996,"level":30}]},{"seedId":"mem_deerbo","name":"Deerbo","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":59864802,"level":28}]},{"seedId":"mem_bluedark","name":"bluedark","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":64454281,"level":28}]},{"seedId":"mem_bubala0817","name":"Bubala0817","level":23,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":33324654,"level":23}]},{"seedId":"mem_darkangel84","name":"DarkAngel84","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":57979414,"level":25}]},{"seedId":"mem_hubby","name":"HuBBy","level":24,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":39396040,"level":24}]},{"seedId":"mem_xenababygirl15","name":"Xena~babygirl15","level":22,"status":"active","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":17206166,"level":22}]},{"seedId":"mem_lsa","name":"lsa","level":30,"status":"inactive","joinedAt":"2026-09-02","rank":"R2","history":[{"date":"2026-09-02","power":50319893,"level":30}]},{"seedId":"mem_drarastoru","name":"DrArastoru","level":24,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":59010657,"level":24}]},{"seedId":"mem_braian1","name":"braian1","level":26,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":33911398,"level":26}]},{"seedId":"mem_kmans","name":"kmans","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":37120878,"level":25}]},{"seedId":"mem_doccherriholiday","name":"DocCherriHoliday","level":28,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":147789531,"level":28}]},{"seedId":"mem_aydn","name":"Aydın","level":25,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":33941795,"level":25}]},{"seedId":"mem_mummis","name":"~Mummis~","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":106861802,"level":30}]},{"seedId":"mem_penterstein","name":"Penterstein","level":20,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":41728732,"level":20}]},{"seedId":"mem_khorma","name":"khorma","level":29,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":79307634,"level":29}]},{"seedId":"mem_desenhommm","name":"desenhoMmM","level":18,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":19824230,"level":18}]},{"seedId":"mem_artiistark","name":"Artii°Stark","level":26,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":64801687,"level":26}]},{"seedId":"mem_tolis19","name":"Tolis19","level":22,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":34456774,"level":22}]},{"seedId":"mem_iceee","name":"iceee","level":30,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":81114877,"level":30}]},{"seedId":"mem_ministryofchaos","name":"MinistryOfChaos","level":24,"status":"active","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":23428159,"level":24}]},{"seedId":"mem_atlass","name":"Atlass","level":17,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":8413358,"level":17}]},{"seedId":"mem_ekaterina146","name":"Ekaterina146","level":22,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":10776782,"level":22}]},{"seedId":"mem_eduarc","name":"EduarC","level":28,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":41411349,"level":28}]},{"seedId":"mem_terryatric","name":"Terryatric","level":29,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":36965146,"level":29}]},{"seedId":"mem_kldoctora","name":"KLdoctora","level":28,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":49627006,"level":28}]},{"seedId":"mem_katvond","name":"KatVonD","level":22,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":18266052,"level":22}]},{"seedId":"mem_grandmaraksha","name":"Grandma-Raksha","level":27,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":45339742,"level":27}]},{"seedId":"mem_gillthunder","name":"GillThunder","level":26,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":21990718,"level":26}]},{"seedId":"mem_careltje","name":"Careltje","level":24,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":33484908,"level":24}]},{"seedId":"mem_cronox","name":"CronoX","level":23,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":21888125,"level":23}]},{"seedId":"mem_shadowblade","name":"Shadowblade","level":23,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":20564300,"level":23}]},{"seedId":"mem_docdoc992","name":"docdoc992","level":28,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":50715652,"level":28}]},{"seedId":"mem_topkids","name":"TOPkids","level":27,"status":"inactive","joinedAt":"2026-09-02","rank":"R1","history":[{"date":"2026-09-02","power":29840510,"level":27}]}],"orgchart":[{"id":"org_sm0ke","memberId":"mem_sm0ke","name":"Sm0kE","title":"Alliance Leader","parentId":null,"order":0},{"id":"org_n9netailz","memberId":"mem_n9netailz","name":"N9NEtailz","title":"Diplomat","parentId":"org_sm0ke","order":1},{"id":"org_xenawarrior","memberId":"mem_xenawarrior","name":"☆XenaWarrior☆","title":"Goddess","parentId":"org_sm0ke","order":2},{"id":"org_cutechaosgremlin","memberId":"mem_cutechaosgremlin","name":"CuteChaosGremlin","title":"Recruiter","parentId":"org_sm0ke","order":3},{"id":"org_darksolce","memberId":"mem_darksolce","name":"DarkSolce","title":"God of War","parentId":"org_sm0ke","order":4}]};
+
+/* ============================================================
+   1. State (mirrors Firestore; rebuilt on every live update)
+   ============================================================ */
+var STATE = { settings: null, members: [], orgchart: [], events: [] };
+var bootstrapChecked = false;
+var isBootstrapNeeded = false;
+var currentUser = null;
+var isAdminUser = false;
+var expandedMemberId = null;
+var bulkDraft = null;
+
+function uid(prefix){
+  return (prefix||"id") + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function numOrEmpty(v){ return (v===null || v===undefined) ? "" : v; }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+function fmtPower(n){
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  var abs = Math.abs(n);
+  if (abs >= 1e9) return (n/1e9).toFixed(2)+"B";
+  if (abs >= 1e6) return (n/1e6).toFixed(2)+"M";
+  if (abs >= 1e3) return (n/1e3).toFixed(1)+"K";
+  return String(n);
+}
+function fmtDelta(n){
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  var sign = n > 0 ? "+" : (n < 0 ? "−" : "");
+  return sign + fmtPower(Math.abs(n));
+}
+function fmtDate(iso){
+  if(!iso) return "—";
+  var d = new Date(iso+"T00:00:00");
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+function daysBetween(a,b){
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+function escapeHtml(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function parsePower(raw){
+  if (!raw) return null;
+  raw = raw.trim().toUpperCase().replace(/,/g,"");
+  var m = raw.match(/^([\d.]+)\s*([KMB]?)$/);
+  if (!m) return null;
+  var n = parseFloat(m[1]);
+  if (isNaN(n)) return null;
+  var mult = m[2]==="K" ? 1e3 : m[2]==="M" ? 1e6 : m[2]==="B" ? 1e9 : 1;
+  return Math.round(n * mult);
+}
+
+function sortedHistory(m){
+  var h = (m && m.history) || [];
+  return h.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+}
+function latestEntry(m){ var h = sortedHistory(m); return h.length ? h[h.length-1] : null; }
+function prevEntry(m){ var h = sortedHistory(m); return h.length > 1 ? h[h.length-2] : null; }
+
+function memberActivity(m){
+  var last = latestEntry(m), prev = prevEntry(m);
+  var power = last ? last.power : null;
+  var level = last ? last.level : m.level;
+  var delta = (last && prev) ? (last.power - prev.power) : null;
+  var pct = (delta !== null && prev.power) ? (delta / prev.power * 100) : null;
+  var staleDays = last ? daysBetween(last.date, todayISO()) : null;
+  var badge = null;
+  var staleLimit = (STATE.settings && STATE.settings.staleDays) || 10;
+  if (!last){
+    badge = {cls:"badge-mute", text:"No data"};
+  } else if (staleDays !== null && staleDays > staleLimit){
+    badge = {cls:"badge-warn", text:"Stale " + staleDays + "d"};
+  } else if (delta === null){
+    badge = null;
+  } else if (pct !== null && pct <= -25){
+    badge = {cls:"badge-bad", text:"Heavy loss"};
+  } else if (delta < 0){
+    badge = {cls:"badge-warn", text:"Declining"};
+  } else if (delta === 0){
+    badge = {cls:"badge-mute", text:"Stagnant"};
+  } else if (pct !== null && pct >= 5){
+    badge = {cls:"badge-good", text:"Growing"};
+  }
+  return {power:power, level:level, delta:delta, pct:pct, staleDays:staleDays, badge:badge};
+}
+
+/* ============================================================
+   2. Toasts
+   ============================================================ */
+function toast(msg, kind){
+  var el = document.createElement("div");
+  el.className = "toast" + (kind === "err" ? " err" : kind === "ok" ? " ok" : "");
+  el.textContent = msg;
+  document.getElementById("toasts").appendChild(el);
+  setTimeout(function(){ el.remove(); }, 3800);
+}
+function setConn(state, text){
+  var dot = document.getElementById("connDot");
+  var t = document.getElementById("connText");
+  dot.className = "conn-dot" + (state === "live" ? " live" : state === "err" ? " err" : "");
+  t.textContent = text;
+}
+
+/* ============================================================
+   3. Firestore live listeners
+   ============================================================ */
+onSnapshot(doc(db, "settings", "main"), function(snap){
+  bootstrapChecked = true;
+  if (!snap.exists()){
+    isBootstrapNeeded = true;
+    STATE.settings = null;
+    renderRoot();
+  } else {
+    isBootstrapNeeded = false;
+    STATE.settings = snap.data();
+    setConn("live", "Synced");
+    renderRoot();
+  }
+}, function(err){
+  setConn("err", "Connection error");
+  console.error("settings listener error", err);
+  toast("Couldn't reach the database: " + err.message, "err");
+});
+
+onSnapshot(collection(db, "members"), function(snap){
+  STATE.members = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  renderRoot();
+}, function(err){ console.error("members listener error", err); });
+
+onSnapshot(collection(db, "orgchart"), function(snap){
+  STATE.orgchart = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  renderRoot();
+}, function(err){ console.error("orgchart listener error", err); });
+
+onSnapshot(collection(db, "events"), function(snap){
+  STATE.events = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  renderRoot();
+}, function(err){ console.error("events listener error", err); });
+
+onAuthStateChanged(auth, async function(user){
+  currentUser = user;
+  if (user){
+    try{
+      var adminSnap = await getDoc(doc(db, "admins", user.uid));
+      isAdminUser = adminSnap.exists();
+    }catch(e){ isAdminUser = false; }
+  } else {
+    isAdminUser = false;
+  }
+  renderRoot();
+});
+
+function renderRoot(){
+  if (!bootstrapChecked) return;
+  if (isBootstrapNeeded){
+    renderSetupWizard();
+  } else {
+    renderAll();
+  }
+}
+
+/* ============================================================
+   4. Writes
+   ============================================================ */
+async function saveSettings(patch){
+  try{
+    await setDoc(doc(db,"settings","main"), patch, {merge:true});
+    toast("Settings saved.", "ok");
+    return true;
+  }catch(e){ toast("Save failed: " + friendlyErr(e), "err"); return false; }
+}
+async function saveMember(id, data){
+  try{ await setDoc(doc(db,"members", id), data, {merge:true}); return true; }
+  catch(e){ toast("Save failed: " + friendlyErr(e), "err"); return false; }
+}
+async function deleteMember(id){
+  try{
+    await deleteDoc(doc(db,"members", id));
+    var kids = STATE.orgchart.filter(function(n){ return n.memberId === id; });
+    for (var i=0;i<kids.length;i++){ await deleteDoc(doc(db,"orgchart", kids[i].id)); }
+    return true;
+  }catch(e){ toast("Delete failed: " + friendlyErr(e), "err"); return false; }
+}
+async function saveOrgNode(id, data){
+  try{ await setDoc(doc(db,"orgchart", id), data, {merge:true}); return true; }
+  catch(e){ toast("Save failed: " + friendlyErr(e), "err"); return false; }
+}
+async function deleteOrgNode(id){
+  try{
+    var kids = STATE.orgchart.filter(function(n){ return n.parentId === id; });
+    for (var i=0;i<kids.length;i++){ await updateDoc(doc(db,"orgchart", kids[i].id), {parentId: null}); }
+    await deleteDoc(doc(db,"orgchart", id));
+    return true;
+  }catch(e){ toast("Delete failed: " + friendlyErr(e), "err"); return false; }
+}
+async function saveEvent(id, data){
+  try{ await setDoc(doc(db,"events", id), data, {merge:true}); return true; }
+  catch(e){ toast("Save failed: " + friendlyErr(e), "err"); return false; }
+}
+async function deleteEvent(id){
+  try{ await deleteDoc(doc(db,"events", id)); return true; }
+  catch(e){ toast("Delete failed: " + friendlyErr(e), "err"); return false; }
+}
+async function addSnapshotToMember(id, date, power, level){
+  try{
+    var snap = await getDoc(doc(db,"members", id));
+    var data = snap.exists() ? snap.data() : {history:[]};
+    var hist = (data.history || []).filter(function(h){ return h.date !== date; });
+    hist.push({date:date, power:power, level:level});
+    hist.sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+    await updateDoc(doc(db,"members", id), {history: hist});
+    return true;
+  }catch(e){ toast("Save failed: " + friendlyErr(e), "err"); return false; }
+}
+function friendlyErr(e){
+  if (e && e.code === "permission-denied") return "you don't have officer access for this action.";
+  return (e && e.message) || "unknown error";
+}
+
+/* ============================================================
+   5. Rendering — masthead / hero / footer
+   ============================================================ */
+function renderChrome(){
+  var s = STATE.settings || {};
+  document.getElementById("brandName").textContent = s.allianceName || "Unnamed Alliance";
+  document.getElementById("brandTag").textContent = s.allianceTag ? "[" + s.allianceTag + "]" : "";
+  document.getElementById("heroTitle").textContent = s.allianceName || "Your Alliance";
+  document.getElementById("heroTagline").textContent = s.tagline || "";
+  document.getElementById("footerNote").textContent =
+    (s.allianceTag ? "[" + s.allianceTag + "] " : "") + (s.allianceName || "Alliance") + " · live roster on Firebase";
+  document.getElementById("tabCountMembers").textContent = STATE.members.length ? "(" + STATE.members.length + ")" : "";
+  var activeEvents = STATE.events.filter(function(e){return e.status==="active";}).length;
+  document.getElementById("tabCountEvents").textContent = activeEvents ? "(" + activeEvents + " active)" : "";
+  document.getElementById("adminOpenBtn").textContent = isAdminUser ? "🔓 Officer Panel" : (currentUser ? "👤 Account" : "🔒 Officer Access");
+}
+
+/* ============================================================
+   6. Rendering — member list
+   ============================================================ */
+function renderMembers(){
+  var q = (document.getElementById("memberSearch").value || "").trim().toLowerCase();
+  var sort = document.getElementById("memberSort").value;
+  var showInactive = document.getElementById("showInactive").checked;
+
+  var rows = STATE.members.map(function(m){ return {m:m, a:memberActivity(m)}; });
+  rows = rows.filter(function(r){
+    if (!showInactive && r.m.status === "inactive") return false;
+    if (q && r.m.name.toLowerCase().indexOf(q) === -1) return false;
+    return true;
+  });
+  rows.sort(function(x,y){
+    switch(sort){
+      case "power_asc": return (x.a.power||0) - (y.a.power||0);
+      case "name_asc": return x.m.name.localeCompare(y.m.name);
+      case "delta_desc": return (y.a.delta!=null?y.a.delta:-Infinity) - (x.a.delta!=null?x.a.delta:-Infinity);
+      case "delta_asc": return (x.a.delta!=null?x.a.delta:Infinity) - (y.a.delta!=null?y.a.delta:Infinity);
+      default: return (y.a.power||0) - (x.a.power||0);
+    }
+  });
+
+  var activeCount = STATE.members.filter(function(m){return m.status!=="inactive";}).length;
+  document.getElementById("memberPanelSub").textContent =
+    STATE.members.length ? (activeCount + " active · " + (STATE.members.length-activeCount) + " inactive") : "";
+
+  var wrap = document.getElementById("memberList");
+
+  if (!STATE.members.length){
+    wrap.innerHTML = '<div class="empty-state"><div class="glyph">🧾</div>' +
+      (isAdminUser
+        ? '<p>No members logged yet. Add them one at a time, or paste a bulk list.</p><button class="btn btn-primary" id="emptyAddMemberBtn">+ Add first member</button>'
+        : '<p>No members logged yet.</p>') +
+      '</div>';
+    if (isAdminUser){
+      var btn = document.getElementById("emptyAddMemberBtn");
+      if (btn) btn.addEventListener("click", function(){ openAdmin("members"); openMemberForm(null); });
+    }
+    return;
+  }
+  if (!rows.length){
+    wrap.innerHTML = '<div class="empty-state"><div class="glyph">⌕</div><p>No members match this search.</p></div>';
+    return;
+  }
+
+  wrap.innerHTML = rows.map(function(r, idx){
+    var m = r.m, a = r.a;
+    var deltaCls = a.delta > 0 ? "up" : (a.delta < 0 ? "down" : "flat");
+    var expanded = expandedMemberId === m.id;
+    var hist = sortedHistory(m);
+    return (
+      '<div class="member-row' + (expanded ? " expanded" : "") + '" data-id="' + m.id + '">' +
+        '<div class="member-row-main" data-role="toggle">' +
+          '<div class="member-rank">' + (idx+1) + '</div>' +
+          '<div class="member-name' + (m.status==="inactive"?" is-inactive":"") + '"><span class="status-dot"></span>' + escapeHtml(m.name) + '</div>' +
+          '<div class="member-level">' + (m.rank ? '<span class="rank-tag">'+escapeHtml(m.rank)+'</span> ' : '') + 'Lv.' + (a.level!=null ? a.level : "—") + '</div>' +
+          (a.badge ? '<span class="badge ' + a.badge.cls + '">' + a.badge.text + '</span>' : '<span></span>') +
+          '<div class="member-power tabular">' + fmtPower(a.power) + '</div>' +
+          '<div class="member-delta tabular ' + deltaCls + '">' + fmtDelta(a.delta) + (a.pct!=null ? ' <span style="opacity:.7">(' + a.pct.toFixed(1) + '%)</span>' : '') + '</div>' +
+          '<div class="member-caret">▾</div>' +
+        '</div>' +
+        '<div class="member-detail">' +
+          '<div class="member-detail-inner">' +
+            '<div class="spark-wrap">' +
+              '<div class="spark-label">Power over time — ' + hist.length + ' snapshot' + (hist.length===1?"":"s") + '</div>' +
+              sparklineSVG(hist) +
+            '</div>' +
+            '<div class="member-detail-stats">' +
+              '<div><b>' + fmtPower(a.power) + '</b>Current</div>' +
+              '<div><b>' + (hist[0] ? fmtDate(hist[0].date) : "—") + '</b>First seen</div>' +
+              '<div><b>' + (hist.length ? fmtDate(hist[hist.length-1].date) : "—") + '</b>Last update</div>' +
+            '</div>' +
+            (isAdminUser ? '<div class="member-detail-actions">' +
+              '<button class="btn btn-sm" data-role="edit-member" data-id="' + m.id + '">Edit</button>' +
+              '<button class="btn btn-sm" data-role="snapshot-member" data-id="' + m.id + '">+ Snapshot</button>' +
+            '</div>' : '') +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
+
+  wrap.querySelectorAll('[data-role="toggle"]').forEach(function(el){
+    el.addEventListener("click", function(){
+      var row = el.closest(".member-row");
+      var id = row.getAttribute("data-id");
+      expandedMemberId = expandedMemberId === id ? null : id;
+      renderMembers();
+    });
+  });
+  wrap.querySelectorAll('[data-role="edit-member"]').forEach(function(el){
+    el.addEventListener("click", function(ev){ ev.stopPropagation(); openMemberForm(el.getAttribute("data-id")); });
+  });
+  wrap.querySelectorAll('[data-role="snapshot-member"]').forEach(function(el){
+    el.addEventListener("click", function(ev){ ev.stopPropagation(); openSnapshotForm(el.getAttribute("data-id")); });
+  });
+}
+
+function sparklineSVG(hist){
+  var w=260,h=54,pad=4;
+  if (!hist || hist.length < 2){
+    return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="'+h+'" preserveAspectRatio="none">' +
+      '<text x="8" y="'+(h/2+4)+'" fill="#6f6151" font-size="11" font-family="IBM Plex Mono, monospace">Not enough data yet</text></svg>';
+  }
+  var vals = hist.map(function(x){return x.power;});
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  var range = (max - min) || Math.max(1, max*0.1) || 1;
+  var step = (w - pad*2) / (vals.length - 1);
+  var pts = vals.map(function(v,i){
+    var x = pad + i*step;
+    var y = h - pad - ((v-min)/range) * (h - pad*2);
+    return x.toFixed(1) + "," + y.toFixed(1);
+  });
+  var last = vals[vals.length-1], first = vals[0];
+  var color = last >= first ? "#6a9c5f" : "#b0503f";
+  var lastPt = pts[pts.length-1].split(",");
+  var areaPts = "M" + pad + "," + (h-pad) + " L" + pts.join(" L") + " L" + (w-pad) + "," + (h-pad) + " Z";
+  return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="'+h+'" preserveAspectRatio="none">' +
+    '<path d="'+areaPts+'" fill="'+color+'" fill-opacity="0.12" stroke="none"/>' +
+    '<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+    '<circle cx="'+lastPt[0]+'" cy="'+lastPt[1]+'" r="2.6" fill="'+color+'"/>' +
+    '</svg>';
+}
+
+/* ============================================================
+   7. Rendering — org chart
+   ============================================================ */
+function renderOrgChart(){
+  var wrap = document.getElementById("orgChartWrap");
+  var nodes = STATE.orgchart;
+  if (!nodes.length){
+    wrap.innerHTML = '<div class="empty-state"><div class="glyph">👑</div>' +
+      (isAdminUser
+        ? '<p>No leadership roles set up yet.</p><button class="btn btn-primary" id="emptyAddOrgBtn">+ Add a role</button>'
+        : '<p>No leadership roles set up yet.</p>') +
+      '</div>';
+    if (isAdminUser){
+      var b = document.getElementById("emptyAddOrgBtn");
+      if (b) b.addEventListener("click", function(){ openAdmin("orgchart"); openOrgForm(null); });
+    }
+    return;
+  }
+  function byParent(pid){
+    return nodes.filter(function(n){ return (n.parentId||null) === pid; })
+                .sort(function(a,b){ return (a.order||0)-(b.order||0); });
+  }
+  function nodeCard(n){
+    var name = n.name || (n.memberId ? (STATE.members.find(function(m){return m.id===n.memberId;})||{}).name : "") || "—";
+    var initial = (name||"?").trim().charAt(0).toUpperCase();
+    return (
+      '<div class="org-card">' +
+        '<div class="initial">' + escapeHtml(initial) + '</div>' +
+        '<div><div class="org-name">' + escapeHtml(name) + '</div><div class="org-role">' + escapeHtml(n.title||"Member") + '</div></div>' +
+        (isAdminUser ? '<button class="org-edit" data-role="edit-org" data-id="' + n.id + '">✎</button>' : '') +
+      '</div>'
+    );
+  }
+  function buildLevel(pid){
+    var kids = byParent(pid);
+    if (!kids.length) return "";
+    return '<ul>' + kids.map(function(n){
+      return '<li class="org-node">' + nodeCard(n) + buildLevel(n.id) + '</li>';
+    }).join("") + '</ul>';
+  }
+  wrap.innerHTML = '<div class="org-tree">' + buildLevel(null) + '</div>' +
+    (isAdminUser ? '<div class="org-empty-hint">Officer view — click ✎ on a card to edit or remove it.</div>' : "");
+  wrap.querySelectorAll('[data-role="edit-org"]').forEach(function(el){
+    el.addEventListener("click", function(){ openOrgForm(el.getAttribute("data-id")); });
+  });
+}
+
+/* ============================================================
+   8. Rendering — events
+   ============================================================ */
+function renderEvents(){
+  var wrap = document.getElementById("eventsWrap");
+  if (!STATE.events.length){
+    wrap.innerHTML = '<div class="empty-state"><div class="glyph">⚜</div>' +
+      (isAdminUser
+        ? '<p>No events tracked yet.</p><button class="btn btn-primary" id="emptyAddEventBtn">+ Add an event</button>'
+        : '<p>No events tracked yet.</p>') +
+      '</div>';
+    if (isAdminUser){
+      var b = document.getElementById("emptyAddEventBtn");
+      if (b) b.addEventListener("click", function(){ openAdmin("events"); openEventForm(null); });
+    }
+    return;
+  }
+  wrap.innerHTML = '<div class="events-grid">' + STATE.events.map(function(e){
+    return (
+      '<div class="event-card' + (e.status!=="active" ? " is-inactive" : "") + '">' +
+        (isAdminUser ? '<div class="event-actions"><button class="icon-btn" data-role="edit-event" data-id="'+e.id+'">✎</button></div>' : '') +
+        '<div class="event-top">' +
+          '<div class="event-icon">' + (e.icon || "⚔️") + '</div>' +
+          '<div class="event-status ' + (e.status==="active"?"active":"inactive") + '">' + (e.status==="active"?"Active":"Inactive") + '</div>' +
+        '</div>' +
+        '<div class="event-name">' + escapeHtml(e.name) + '</div>' +
+        '<div class="event-assignee' + (e.assigned ? "" : " unassigned") + '">' +
+          (e.assigned ? "Assigned — " + escapeHtml(e.assignee||"") : "⚠ Not assigned") +
+        '</div>' +
+      '</div>'
+    );
+  }).join("") + '</div>';
+  wrap.querySelectorAll('[data-role="edit-event"]').forEach(function(el){
+    el.addEventListener("click", function(){ openEventForm(el.getAttribute("data-id")); });
+  });
+}
+
+function renderAll(){
+  renderChrome();
+  renderMembers();
+  renderOrgChart();
+  renderEvents();
+}
+
+/* ============================================================
+   9. Tabs
+   ============================================================ */
+document.getElementById("tabs").addEventListener("click", function(ev){
+  var btn = ev.target.closest(".tab");
+  if (!btn) return;
+  document.querySelectorAll(".tab").forEach(function(t){ t.classList.toggle("active", t===btn); });
+  var key = btn.getAttribute("data-tab");
+  document.querySelectorAll(".tab-panel").forEach(function(p){ p.classList.toggle("active", p.id === "tab-" + key); });
+});
+document.getElementById("memberSearch").addEventListener("input", renderMembers);
+document.getElementById("memberSort").addEventListener("change", renderMembers);
+document.getElementById("showInactive").addEventListener("change", renderMembers);
+
+/* ============================================================
+   10. Drawer / modal plumbing
+   ============================================================ */
+var scrim = document.getElementById("scrim");
+var drawer = document.getElementById("drawer");
+var drawerBody = document.getElementById("drawerBody");
+var drawerTitle = document.getElementById("drawerTitle");
+
+function openDrawer(title){ drawerTitle.textContent = title; scrim.classList.add("open"); drawer.classList.add("open"); }
+function closeDrawer(){ scrim.classList.remove("open"); drawer.classList.remove("open"); }
+scrim.addEventListener("click", closeDrawer);
+document.getElementById("drawerCloseBtn").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", function(ev){ if (ev.key === "Escape") closeDrawer(); });
+
+document.getElementById("adminOpenBtn").addEventListener("click", function(){
+  if (isAdminUser){ openAdmin("settings"); }
+  else if (currentUser){ renderAccountPanel(); }
+  else { renderLogin(); }
+});
+
+/* ---- login / signup ---- */
+function renderLogin(){
+  openDrawer("Officer Access");
+  drawerBody.innerHTML =
+    '<div class="admin-tabs">' +
+      '<button class="admin-tab active" data-authtab="signin">Sign in</button>' +
+      '<button class="admin-tab" data-authtab="signup">Create account</button>' +
+    '</div>' +
+    '<div id="authSection"></div>';
+  drawerBody.querySelectorAll("[data-authtab]").forEach(function(el){
+    el.addEventListener("click", function(){
+      drawerBody.querySelectorAll("[data-authtab]").forEach(function(x){ x.classList.toggle("active", x===el); });
+      renderAuthForm(el.getAttribute("data-authtab"));
+    });
+  });
+  renderAuthForm("signin");
+}
+function renderAuthForm(mode){
+  var host = document.getElementById("authSection");
+  var isSignup = mode === "signup";
+  host.innerHTML =
+    '<form id="authForm">' +
+      '<div class="field"><label>Email</label><input type="email" id="authEmail" required autocomplete="username"></div>' +
+      '<div class="field"><label>Password</label><input type="password" id="authPassword" required minlength="6" autocomplete="' + (isSignup?'new-password':'current-password') + '"></div>' +
+      '<button class="btn btn-primary btn-block" type="submit">' + (isSignup ? "Create account" : "Sign in") + '</button>' +
+    '</form>' +
+    '<p class="field-hint" style="margin-top:14px;">' +
+      (isSignup
+        ? "Creating an account signs you in but doesn't grant edit access by itself — an existing officer still has to approve you (see below after you sign up)."
+        : "Signing in shows whether you have edit access yet. Officers grant access to each other from the Officer Panel.") +
+    '</p>';
+  document.getElementById("authForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var email = document.getElementById("authEmail").value.trim();
+    var pw = document.getElementById("authPassword").value;
+    try{
+      if (isSignup) await createUserWithEmailAndPassword(auth, email, pw);
+      else await signInWithEmailAndPassword(auth, email, pw);
+      toast(isSignup ? "Account created." : "Signed in.", "ok");
+    }catch(e){
+      toast(authErrText(e), "err");
+    }
+  });
+}
+function authErrText(e){
+  var code = e && e.code || "";
+  if (code.indexOf("wrong-password")>=0 || code.indexOf("invalid-credential")>=0) return "Wrong email or password.";
+  if (code.indexOf("user-not-found")>=0) return "No account with that email — try Create account.";
+  if (code.indexOf("email-already-in-use")>=0) return "That email already has an account — try Sign in.";
+  if (code.indexOf("weak-password")>=0) return "Password needs at least 6 characters.";
+  return e && e.message || "Something went wrong.";
+}
+
+function renderAccountPanel(){
+  openDrawer("Your Account");
+  drawerBody.innerHTML =
+    '<p style="font-size:13px;color:var(--text-dim);margin-top:0;">Signed in as <b style="color:var(--text);">' + escapeHtml(currentUser.email) + '</b>. You don\'t have officer (edit) access yet.</p>' +
+    '<div class="field"><label>Your account ID</label><div class="uid-box" id="uidBox">' + escapeHtml(currentUser.uid) + '</div></div>' +
+    '<p class="field-hint">Share this ID with an existing officer — they can grant you edit access from the Officer Panel → Admins tab.</p>' +
+    '<div class="divider"></div>' +
+    '<button class="btn btn-block" id="signOutBtn">Sign out</button>';
+  document.getElementById("signOutBtn").addEventListener("click", async function(){ await signOut(auth); closeDrawer(); toast("Signed out.", "ok"); });
+}
+
+/* ============================================================
+   11. Admin panel
+   ============================================================ */
+var ADMIN_TABS = [
+  {key:"settings", label:"Settings"},
+  {key:"members", label:"Members"},
+  {key:"bulk", label:"Bulk Update"},
+  {key:"orgchart", label:"Leadership"},
+  {key:"events", label:"Events"},
+  {key:"admins", label:"Admins"}
+];
+
+function openAdmin(section){
+  openDrawer("Officer Panel");
+  drawerBody.innerHTML =
+    '<div class="admin-tabs">' + ADMIN_TABS.map(function(t){
+      return '<button class="admin-tab' + (t.key===section?" active":"") + '" data-atab="' + t.key + '">' + t.label + '</button>';
+    }).join("") +
+    '<button class="admin-tab" id="lockBtn" style="margin-left:auto;color:var(--danger);border-color:var(--danger);">Sign out</button>' +
+    '</div>' +
+    '<div id="adminSections"></div>';
+  document.getElementById("lockBtn").addEventListener("click", async function(){ await signOut(auth); closeDrawer(); toast("Signed out.", "ok"); });
+  drawerBody.querySelectorAll("[data-atab]").forEach(function(el){
+    el.addEventListener("click", function(){ renderAdminSection(el.getAttribute("data-atab")); });
+  });
+  renderAdminSection(section);
+}
+function renderAdminSection(key){
+  drawerBody.querySelectorAll("[data-atab]").forEach(function(el){ el.classList.toggle("active", el.getAttribute("data-atab") === key); });
+  var host = document.getElementById("adminSections");
+  if (key === "settings") return renderSettingsAdmin(host);
+  if (key === "members") return renderMembersAdmin(host);
+  if (key === "bulk") return renderBulkAdmin(host);
+  if (key === "orgchart") return renderOrgAdmin(host);
+  if (key === "events") return renderEventsAdmin(host);
+  if (key === "admins") return renderAdminsAdmin(host);
+}
+
+/* ---- settings ---- */
+function renderSettingsAdmin(host){
+  var s = STATE.settings || {};
+  host.innerHTML =
+    '<form id="settingsForm">' +
+      '<div class="field"><label>Alliance name</label><input type="text" id="setName" value="' + escapeHtml(s.allianceName||"") + '" required></div>' +
+      '<div class="field"><label>Tag</label><input type="text" id="setTag" value="' + escapeHtml(s.allianceTag||"") + '" maxlength="6"></div>' +
+      '<div class="field"><label>Tagline</label><input type="text" id="setTagline" value="' + escapeHtml(s.tagline||"") + '"></div>' +
+      '<div class="field"><label>Stale after (days)</label><input type="number" id="setStale" min="1" max="60" value="' + (s.staleDays||10) + '"></div>' +
+      '<button class="btn btn-primary btn-block" type="submit">Save settings</button>' +
+    '</form>';
+  document.getElementById("settingsForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var ok = await saveSettings({
+      allianceName: document.getElementById("setName").value.trim(),
+      allianceTag: document.getElementById("setTag").value.trim().toUpperCase(),
+      tagline: document.getElementById("setTagline").value.trim(),
+      staleDays: parseInt(document.getElementById("setStale").value,10) || 10
+    });
+  });
+}
+
+/* ---- members ---- */
+function renderMembersAdmin(host){
+  host.innerHTML =
+    '<button class="btn btn-primary btn-block" id="addMemberBtn" style="margin-bottom:14px;">+ Add member</button>' +
+    '<div id="adminMemberList"></div>';
+  document.getElementById("addMemberBtn").addEventListener("click", function(){ openMemberForm(null); });
+  var list = document.getElementById("adminMemberList");
+  list.innerHTML = STATE.members.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(m){
+    return '<div class="admin-list-item"><span class="grow">' + escapeHtml(m.name) + '</span>' +
+      '<span class="meta">' + (m.status==="inactive"?"inactive":"active") + '</span>' +
+      '<button class="icon-btn" data-role="am-edit" data-id="' + m.id + '">✎</button>' +
+      '<button class="icon-btn" data-role="am-del" data-id="' + m.id + '">🗑</button></div>';
+  }).join("") || '<p class="field-hint">No members yet.</p>';
+  list.querySelectorAll('[data-role="am-edit"]').forEach(function(el){ el.addEventListener("click", function(){ openMemberForm(el.getAttribute("data-id")); }); });
+  list.querySelectorAll('[data-role="am-del"]').forEach(function(el){
+    el.addEventListener("click", async function(){
+      var id = el.getAttribute("data-id");
+      var m = STATE.members.find(function(x){return x.id===id;});
+      if (!confirm('Remove "' + m.name + '" and their history? This can\'t be undone.')) return;
+      await deleteMember(id);
+      toast("Member removed.", "ok");
+      renderMembersAdmin(host);
+    });
+  });
+}
+function openMemberForm(id){
+  var m = id ? STATE.members.find(function(x){return x.id===id;}) : null;
+  var last = m ? latestEntry(m) : null;
+  modalOpen(m ? "Edit member" : "Add member",
+    '<form id="memberForm">' +
+      '<div class="field"><label>Name</label><input type="text" id="mfName" value="' + (m?escapeHtml(m.name):"") + '" required></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Power (' + todayISO() + ')</label><input type="text" id="mfPower" placeholder="e.g. 96.3M" value="' + (last?fmtPower(last.power):"") + '"></div>' +
+        '<div class="field"><label>Level</label><input type="number" id="mfLevel" min="1" max="60" value="' + numOrEmpty(last ? last.level : (m ? m.level : null)) + '"></div>' +
+      '</div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Status</label><select id="mfStatus">' +
+          '<option value="active"' + (!m||m.status==="active"?" selected":"") + '>Active</option>' +
+          '<option value="inactive"' + (m&&m.status==="inactive"?" selected":"") + '>Inactive</option>' +
+        '</select></div>' +
+        '<div class="field"><label>In-game rank</label><select id="mfRank">' +
+          ["", "R1", "R2", "R3", "R4", "R5"].map(function(r){
+            return '<option value="' + r + '"' + ((m&&m.rank===r)||(!m&&r==="")?" selected":"") + '>' + (r||"—") + '</option>';
+          }).join("") +
+        '</select></div>' +
+      '</div>' +
+      '<div class="field-hint" style="margin-bottom:14px;">Entering a power value adds a snapshot dated today. Leave blank to only change name/status/rank.</div>' +
+      '<button class="btn btn-primary btn-block" type="submit">' + (m?"Save changes":"Add member") + '</button>' +
+    '</form>'
+  );
+  document.getElementById("memberForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var name = document.getElementById("mfName").value.trim();
+    if (!name) return;
+    var powerRaw = document.getElementById("mfPower").value.trim();
+    var level = document.getElementById("mfLevel").value ? parseInt(document.getElementById("mfLevel").value,10) : null;
+    var status = document.getElementById("mfStatus").value;
+    var rank = document.getElementById("mfRank").value || null;
+    var id = m ? m.id : uid("mem");
+    var body = { name:name, status:status, rank:rank };
+    if (level!=null) body.level = level;
+    if (!m){ body.joinedAt = todayISO(); body.history = []; }
+    await saveMember(id, body);
+    if (powerRaw){
+      var pw = parsePower(powerRaw);
+      if (pw !== null) await addSnapshotToMember(id, todayISO(), pw, level);
+    }
+    toast(m ? "Member updated." : "Member added.", "ok");
+    modalClose();
+    renderMembersAdmin(document.getElementById("adminSections"));
+  });
+}
+function openSnapshotForm(id){
+  var m = STATE.members.find(function(x){return x.id===id;});
+  if (!m) return;
+  modalOpen("New snapshot — " + m.name,
+    '<form id="snapForm">' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Date</label><input type="date" id="sfDate" value="' + todayISO() + '" required></div>' +
+        '<div class="field"><label>Power</label><input type="text" id="sfPower" placeholder="e.g. 96.3M" required></div>' +
+      '</div>' +
+      '<div class="field"><label>Level (optional)</label><input type="number" id="sfLevel" min="1" max="60"></div>' +
+      '<button class="btn btn-primary btn-block" type="submit">Save snapshot</button>' +
+    '</form>'
+  );
+  document.getElementById("snapForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var date = document.getElementById("sfDate").value;
+    var pw = parsePower(document.getElementById("sfPower").value.trim());
+    var lvl = document.getElementById("sfLevel").value ? parseInt(document.getElementById("sfLevel").value,10) : null;
+    if (pw === null) { toast("Couldn't read that power value.", "err"); return; }
+    await addSnapshotToMember(id, date, pw, lvl);
+    toast("Snapshot saved.", "ok");
+    modalClose();
+  });
+}
+
+/* ---- bulk update (paste list) ---- */
+function renderBulkAdmin(host){
+  host.innerHTML =
+    '<p style="color:var(--text-dim);font-size:12.5px;margin-top:0;">Paste one member per line: <code>Name, Power[, Level]</code> — e.g. <code>Mstical, 120.2M, 28</code>. Power accepts K/M/B suffixes or plain numbers.</p>' +
+    '<div class="field"><textarea id="bulkText" placeholder="Mstical, 120.2M, 28\nDarkSolce, 92.7M, 29"></textarea></div>' +
+    '<button class="btn btn-primary btn-block" id="bulkParseBtn">Parse list</button>' +
+    '<div id="bulkResult"></div>';
+  document.getElementById("bulkParseBtn").addEventListener("click", function(){
+    var text = document.getElementById("bulkText").value;
+    var lines = text.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+    var rows = lines.map(function(line){
+      var parts = line.split(",").map(function(p){return p.trim();});
+      var name = parts[0] || "";
+      var power = parsePower(parts[1]);
+      var level = parts[2] ? parseInt(parts[2],10) : null;
+      var existing = STATE.members.find(function(m){ return m.name.toLowerCase() === name.toLowerCase(); });
+      return {name:name, power:power, level:level, matchId: existing?existing.id:null};
+    }).filter(function(r){ return r.name && r.power != null; });
+    if (!rows.length){ toast("Nothing valid to import.", "err"); return; }
+    bulkDraft = {rows:rows};
+    renderBulkPreview(document.getElementById("bulkResult"));
+  });
+}
+function renderBulkPreview(resultEl){
+  var rows = bulkDraft.rows;
+  resultEl.innerHTML =
+    '<div class="divider"></div>' +
+    '<p style="font-size:12px;color:var(--text-dim);">' + rows.length + ' row' + (rows.length===1?"":"s") + ' parsed. New names will be added as new members.</p>' +
+    '<div id="bulkRows">' + rows.map(function(r,i){
+      return '<div class="bulk-row" data-i="' + i + '">' +
+        '<input data-f="name" value="' + escapeHtml(r.name) + '">' +
+        '<input data-f="power" value="' + fmtPower(r.power) + '">' +
+        '<input data-f="level" value="' + (r.level!=null?r.level:"") + '" placeholder="Lv">' +
+        '<span class="' + (r.matchId?"match-ok":"match-new") + '">' + (r.matchId?"match":"new") + '</span>' +
+        '<button class="icon-btn" data-role="bulk-del" data-i="' + i + '">✕</button>' +
+      '</div>';
+    }).join("") + '</div>' +
+    '<button class="btn btn-primary btn-block" id="bulkSaveBtn" style="margin-top:10px;">Save ' + rows.length + ' snapshot' + (rows.length===1?"":"s") + '</button>';
+  resultEl.querySelectorAll('.bulk-row input').forEach(function(inp){
+    inp.addEventListener("change", function(){
+      var i = parseInt(inp.closest(".bulk-row").getAttribute("data-i"),10);
+      var f = inp.getAttribute("data-f");
+      if (f==="power") bulkDraft.rows[i].power = parsePower(inp.value);
+      else if (f==="level") bulkDraft.rows[i].level = inp.value ? parseInt(inp.value,10) : null;
+      else bulkDraft.rows[i].name = inp.value;
+    });
+  });
+  resultEl.querySelectorAll('[data-role="bulk-del"]').forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var i = parseInt(btn.getAttribute("data-i"),10);
+      bulkDraft.rows.splice(i,1);
+      renderBulkPreview(resultEl);
+    });
+  });
+  document.getElementById("bulkSaveBtn").addEventListener("click", async function(){
+    var date = todayISO();
+    for (var i=0;i<bulkDraft.rows.length;i++){
+      var r = bulkDraft.rows[i];
+      var existing = STATE.members.find(function(m){ return m.name.toLowerCase() === r.name.toLowerCase(); });
+      var mid;
+      if (existing){ mid = existing.id; if (r.level!=null) await saveMember(mid, {level:r.level}); }
+      else { mid = uid("mem"); await saveMember(mid, {name:r.name, level:r.level, status:"active", rank:null, joinedAt:date, history:[]}); }
+      await addSnapshotToMember(mid, date, r.power, r.level);
+    }
+    toast("Imported " + bulkDraft.rows.length + " snapshots.", "ok");
+    bulkDraft = null;
+    renderBulkAdmin(document.getElementById("adminSections"));
+  });
+}
+
+/* ---- org chart ---- */
+function renderOrgAdmin(host){
+  host.innerHTML =
+    '<button class="btn btn-primary btn-block" id="addOrgBtn" style="margin-bottom:14px;">+ Add role</button>' +
+    '<div id="adminOrgList"></div>';
+  document.getElementById("addOrgBtn").addEventListener("click", function(){ openOrgForm(null); });
+  var list = document.getElementById("adminOrgList");
+  list.innerHTML = STATE.orgchart.map(function(n){
+    return '<div class="admin-list-item"><span class="grow">' + escapeHtml(n.name||"") + '</span><span class="meta">' + escapeHtml(n.title||"") + '</span>' +
+      '<button class="icon-btn" data-role="ao-edit" data-id="' + n.id + '">✎</button>' +
+      '<button class="icon-btn" data-role="ao-del" data-id="' + n.id + '">🗑</button></div>';
+  }).join("") || '<p class="field-hint">No roles yet.</p>';
+  list.querySelectorAll('[data-role="ao-edit"]').forEach(function(el){ el.addEventListener("click", function(){ openOrgForm(el.getAttribute("data-id")); }); });
+  list.querySelectorAll('[data-role="ao-del"]').forEach(function(el){
+    el.addEventListener("click", async function(){
+      var id = el.getAttribute("data-id");
+      if (!confirm("Remove this role? Any roles under it move up a level.")) return;
+      await deleteOrgNode(id);
+      toast("Role removed.", "ok");
+      renderOrgAdmin(host);
+    });
+  });
+}
+function openOrgForm(id){
+  var n = id ? STATE.orgchart.find(function(x){return x.id===id;}) : null;
+  var parentOptions = '<option value="">— Top of chain —</option>' + STATE.orgchart
+    .filter(function(x){ return !n || x.id !== n.id; })
+    .map(function(x){ return '<option value="'+x.id+'"' + (n&&n.parentId===x.id?" selected":"") + '>' + escapeHtml(x.name||x.title) + '</option>'; }).join("");
+  var memberOptions = '<option value="">— Not linked to a member —</option>' + STATE.members
+    .map(function(m){ return '<option value="'+m.id+'"' + (n&&n.memberId===m.id?" selected":"") + '>' + escapeHtml(m.name) + '</option>'; }).join("");
+  modalOpen(n?"Edit role":"Add role",
+    '<form id="orgForm">' +
+      '<div class="field"><label>Link to roster member (optional)</label><select id="ofMember">' + memberOptions + '</select></div>' +
+      '<div class="field"><label>Display name (used if not linked)</label><input type="text" id="ofName" value="' + (n?escapeHtml(n.name||""):"") + '"></div>' +
+      '<div class="field"><label>Title / role</label><input type="text" id="ofTitle" value="' + (n?escapeHtml(n.title||""):"") + '" required></div>' +
+      '<div class="field"><label>Reports to</label><select id="ofParent">' + parentOptions + '</select></div>' +
+      '<button class="btn btn-primary btn-block" type="submit">' + (n?"Save role":"Add role") + '</button>' +
+    '</form>'
+  );
+  document.getElementById("orgForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var id2 = n ? n.id : uid("org");
+    await saveOrgNode(id2, {
+      memberId: document.getElementById("ofMember").value || null,
+      name: document.getElementById("ofName").value.trim(),
+      title: document.getElementById("ofTitle").value.trim(),
+      parentId: document.getElementById("ofParent").value || null,
+      order: n ? (n.order||0) : STATE.orgchart.length
+    });
+    toast("Leadership updated.", "ok");
+    modalClose();
+    renderOrgAdmin(document.getElementById("adminSections"));
+  });
+}
+
+/* ---- events ---- */
+function renderEventsAdmin(host){
+  host.innerHTML =
+    '<button class="btn btn-primary btn-block" id="addEventBtn" style="margin-bottom:14px;">+ Add event</button>' +
+    '<div id="adminEventList"></div>';
+  document.getElementById("addEventBtn").addEventListener("click", function(){ openEventForm(null); });
+  var list = document.getElementById("adminEventList");
+  list.innerHTML = STATE.events.map(function(e){
+    return '<div class="admin-list-item"><span>' + (e.icon||"⚔️") + '</span><span class="grow">' + escapeHtml(e.name) + '</span><span class="meta">' + e.status + '</span>' +
+      '<button class="icon-btn" data-role="ae-edit" data-id="' + e.id + '">✎</button>' +
+      '<button class="icon-btn" data-role="ae-del" data-id="' + e.id + '">🗑</button></div>';
+  }).join("") || '<p class="field-hint">No events yet.</p>';
+  list.querySelectorAll('[data-role="ae-edit"]').forEach(function(el){ el.addEventListener("click", function(){ openEventForm(el.getAttribute("data-id")); }); });
+  list.querySelectorAll('[data-role="ae-del"]').forEach(function(el){
+    el.addEventListener("click", async function(){
+      var id = el.getAttribute("data-id");
+      if (!confirm("Remove this event?")) return;
+      await deleteEvent(id);
+      toast("Event removed.", "ok");
+      renderEventsAdmin(host);
+    });
+  });
+}
+function openEventForm(id){
+  var e = id ? STATE.events.find(function(x){return x.id===id;}) : null;
+  modalOpen(e?"Edit event":"Add event",
+    '<form id="eventForm">' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Icon (emoji)</label><input type="text" id="efIcon" maxlength="4" value="' + (e?escapeHtml(e.icon||""):"⚔️") + '"></div>' +
+        '<div class="field"><label>Status</label><select id="efStatus"><option value="active"' + (!e||e.status==="active"?" selected":"") + '>Active</option><option value="inactive"' + (e&&e.status==="inactive"?" selected":"") + '>Inactive</option></select></div>' +
+      '</div>' +
+      '<div class="field"><label>Event name</label><input type="text" id="efName" value="' + (e?escapeHtml(e.name):"") + '" required></div>' +
+      '<div class="field"><label>Assignment</label><select id="efAssigned"><option value="0">Not assigned</option><option value="1"' + (e&&e.assigned?" selected":"") + '>Assigned</option></select></div>' +
+      '<div class="field"><label>Assignee (optional)</label><input type="text" id="efAssignee" value="' + (e?escapeHtml(e.assignee||""):"") + '"></div>' +
+      '<button class="btn btn-primary btn-block" type="submit">' + (e?"Save event":"Add event") + '</button>' +
+    '</form>'
+  );
+  document.getElementById("efAssigned").value = e && e.assigned ? "1" : "0";
+  document.getElementById("eventForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var id2 = e ? e.id : uid("evt");
+    await saveEvent(id2, {
+      icon: document.getElementById("efIcon").value.trim() || "⚔️",
+      status: document.getElementById("efStatus").value,
+      name: document.getElementById("efName").value.trim(),
+      assigned: document.getElementById("efAssigned").value === "1",
+      assignee: document.getElementById("efAssignee").value.trim()
+    });
+    toast("Event saved.", "ok");
+    modalClose();
+    renderEventsAdmin(document.getElementById("adminSections"));
+  });
+}
+
+/* ---- admins ---- */
+var adminsCache = [];
+function renderAdminsAdmin(host){
+  host.innerHTML = '<p style="color:var(--text-dim);font-size:12.5px;margin-top:0;">Loading…</p>';
+  onSnapshot(collection(db,"admins"), function(snap){
+    adminsCache = snap.docs.map(function(d){ return Object.assign({uid:d.id}, d.data()); });
+    if (document.querySelector('[data-atab="admins"]') && document.querySelector('[data-atab="admins"]').classList.contains("active")){
+      paintAdminsAdmin(host);
+    }
+  });
+}
+function paintAdminsAdmin(host){
+  host.innerHTML =
+    '<p style="color:var(--text-dim);font-size:12.5px;margin-top:0;">Ask the officer to sign in (Officer Access → Create account or Sign in) and copy their Account ID from the "Your Account" screen, then paste it here to grant them edit access.</p>' +
+    '<form id="grantForm">' +
+      '<div class="field"><label>Account ID (UID)</label><input type="text" id="grantUid" required></div>' +
+      '<div class="field"><label>Label (name/email, optional)</label><input type="text" id="grantLabel" placeholder="e.g. DarkSolce"></div>' +
+      '<button class="btn btn-primary btn-block" type="submit">Grant officer access</button>' +
+    '</form>' +
+    '<div class="divider"></div>' +
+    '<div id="adminsList"></div>';
+  var list = document.getElementById("adminsList");
+  list.innerHTML = adminsCache.map(function(a){
+    return '<div class="admin-list-item"><span class="grow">' + escapeHtml(a.label || a.uid) + '</span>' +
+      (currentUser && a.uid === currentUser.uid ? '<span class="meta">you</span>' :
+        '<button class="icon-btn" data-role="rev-admin" data-uid="' + a.uid + '">🗑</button>') +
+      '</div>';
+  }).join("") || '<p class="field-hint">No officers yet.</p>';
+  list.querySelectorAll('[data-role="rev-admin"]').forEach(function(el){
+    el.addEventListener("click", async function(){
+      var uidToRemove = el.getAttribute("data-uid");
+      if (!confirm("Remove this officer's edit access?")) return;
+      try{ await deleteDoc(doc(db,"admins", uidToRemove)); toast("Access revoked.", "ok"); }
+      catch(e){ toast("Failed: " + friendlyErr(e), "err"); }
+    });
+  });
+  document.getElementById("grantForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var uidVal = document.getElementById("grantUid").value.trim();
+    var label = document.getElementById("grantLabel").value.trim();
+    if (!uidVal) return;
+    try{
+      await setDoc(doc(db,"admins", uidVal), {label:label || uidVal, grantedAt: new Date().toISOString(), grantedBy: currentUser ? currentUser.uid : null});
+      toast("Officer access granted.", "ok");
+      document.getElementById("grantForm").reset();
+    }catch(e){ toast("Failed: " + friendlyErr(e), "err"); }
+  });
+}
+// patch renderAdminSection to paint admins after first data arrives
+var _origRenderAdminSection = renderAdminSection;
+
+/* ============================================================
+   12. Generic modal
+   ============================================================ */
+var modalHost = null;
+function modalOpen(title, bodyHtml){
+  modalClose();
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(8,6,4,.7);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:8vh 16px;overflow:auto;";
+  overlay.innerHTML =
+    '<div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);max-width:420px;width:100%;box-shadow:var(--shadow);">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border-soft);">' +
+        '<h3 style="font-family:var(--font-display);font-weight:400;font-size:18px;margin:0;letter-spacing:.02em;">' + escapeHtml(title) + '</h3>' +
+        '<button id="modalCloseBtn" style="background:none;border:none;color:var(--text-faint);font-size:19px;cursor:pointer;">✕</button>' +
+      '</div>' +
+      '<div style="padding:18px;">' + bodyHtml + '</div>' +
+    '</div>';
+  overlay.addEventListener("click", function(ev){ if (ev.target === overlay) modalClose(); });
+  document.body.appendChild(overlay);
+  overlay.querySelector("#modalCloseBtn").addEventListener("click", modalClose);
+  modalHost = overlay;
+  return overlay;
+}
+function modalClose(){ if (modalHost){ modalHost.remove(); modalHost = null; } }
+
+/* ============================================================
+   13. First-run setup wizard (bootstraps owner + admins doc)
+   ============================================================ */
+function renderSetupWizard(){
+  document.getElementById("app").innerHTML =
+    '<div class="wizard-wrap"><div class="wizard-card">' +
+      '<div class="hero-eyebrow">Last Asylum: Plague</div>' +
+      '<h1>Stand up your alliance HQ</h1>' +
+      '<p>One-time setup. This creates the first officer account (you) and the shared database. Everything else is editable afterward.</p>' +
+      '<form id="setupForm">' +
+        '<div class="field"><label>Alliance name</label><input type="text" id="wName" value="RavenWood Rebellion" required></div>' +
+        '<div class="field"><label>Tag</label><input type="text" id="wTag" value="RBLS" maxlength="6"></div>' +
+        '<div class="field"><label>Tagline (optional)</label><input type="text" id="wTagline" value="Force, honor, victory."></div>' +
+        '<div class="divider"></div>' +
+        '<div class="field"><label>Your email</label><input type="email" id="wEmail" required></div>' +
+        '<div class="field"><label>Choose a password</label><input type="password" id="wPassword" required minlength="6"></div>' +
+        '<div class="field-hint" style="margin-bottom:16px;">This becomes your officer login. Add more officers later from the Officer Panel.</div>' +
+        (SEED_DATA ?
+          '<div class="divider"></div>' +
+          '<label class="field-hint" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:16px;">' +
+            '<input type="checkbox" id="wSeed" checked style="margin-top:3px;">' +
+            '<span>Import the existing roster (' + SEED_DATA.members.length + ' members + leadership chart) so you dont have to re-enter everyone.</span>' +
+          '</label>'
+        : "") +
+        '<button class="btn btn-primary btn-block" type="submit" id="wSubmitBtn">Create alliance HQ</button>' +
+      '</form>' +
+    '</div></div>';
+  document.getElementById("setupForm").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var name = document.getElementById("wName").value.trim();
+    var tag = document.getElementById("wTag").value.trim().toUpperCase();
+    var tagline = document.getElementById("wTagline").value.trim();
+    var email = document.getElementById("wEmail").value.trim();
+    var pw = document.getElementById("wPassword").value;
+    var wantsSeed = SEED_DATA && document.getElementById("wSeed") && document.getElementById("wSeed").checked;
+    var btn = document.getElementById("wSubmitBtn");
+    try{
+      var cred = await createUserWithEmailAndPassword(auth, email, pw);
+      await setDoc(doc(db,"admins", cred.user.uid), {label:email, grantedAt:new Date().toISOString(), grantedBy:cred.user.uid});
+      await setDoc(doc(db,"settings","main"), {
+        allianceName:name, allianceTag:tag, tagline:tagline, staleDays:(SEED_DATA && SEED_DATA.settings ? SEED_DATA.settings.staleDays : 10) || 10,
+        createdAt:new Date().toISOString()
+      });
+      if (wantsSeed){
+        btn.disabled = true;
+        btn.textContent = "Importing roster…";
+        await importSeedData();
+      }
+      toast("Alliance HQ created — you're signed in as the first officer.", "ok");
+    }catch(e){
+      toast(authErrText(e), "err");
+    }
+  });
+}
+
+async function importSeedData(){
+  if (!SEED_DATA) return;
+  var members = SEED_DATA.members || [];
+  for (var i=0;i<members.length;i++){
+    var m = members[i];
+    var data = {
+      name: m.name, level: (m.level===undefined?null:m.level), status: m.status || "active",
+      joinedAt: m.joinedAt || null, rank: m.rank || null, history: m.history || []
+    };
+    try{ await setDoc(doc(db,"members", m.seedId), data); }
+    catch(e){ /* keep going even if one member fails; surfaced via toast at the end */ }
+  }
+  var org = SEED_DATA.orgchart || [];
+  for (var j=0;j<org.length;j++){
+    var node = org[j];
+    var nodeData = { memberId: node.memberId, name: node.name, title: node.title, parentId: node.parentId, order: node.order };
+    try{ await setDoc(doc(db,"orgchart", node.id), nodeData); }
+    catch(e){ /* same as above */ }
+  }
+}
+</script>
+</body>
+</html>
