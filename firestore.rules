@@ -1,0 +1,59 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // True only before the very first officer account has finished setup.
+    // Lets the setup wizard create the first admin doc + settings doc,
+    // and closes itself forever the moment settings/main exists.
+    function isBootstrap() {
+      return !exists(/databases/$(database)/documents/settings/main);
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Everyone (including signed-out visitors) can read the whole app.
+    // Only officers (or the not-yet-finished setup wizard) can write.
+    match /settings/main {
+      allow read: if true;
+      allow create: if (isBootstrap() && isSignedIn()) || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // No bootstrap exception here on purpose: by the time the setup
+    // wizard imports the starter roster, settings/main and the first
+    // admins/{uid} doc already exist, so isAdmin() alone covers it.
+    // That keeps these collections writable by officers only, always.
+    match /members/{memberId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /orgchart/{nodeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Admins allowlist. A signed-in user may always read the list (so the
+    // app can tell them their own UID/status), and may create their OWN
+    // admin doc only during bootstrap (the very first officer). After
+    // that, only an existing admin can grant/revoke admin access.
+    match /admins/{uid} {
+      allow read: if isSignedIn();
+      allow create: if (isBootstrap() && request.auth.uid == uid) || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+  }
+}
