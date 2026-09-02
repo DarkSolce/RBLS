@@ -1,0 +1,61 @@
+# RavenWood Rebellion — Alliance HQ
+
+A member-activity tracker for the *Last Asylum: Plague* alliance **RavenWood Rebellion [RBLS]**. Single static page (`index.html`), backed by a free Firebase project for shared, live-updating data — no server to run, no Claude account needed to view or use it.
+
+## What's in this folder
+
+- `index.html` — the whole app (viewer + officer panel). This is the only file that needs to be hosted.
+- `firestore.rules` — the database security rules. Paste-in only; doesn't get deployed as a file.
+- `README.md` — this file.
+
+## 1. Put the security rules in place
+
+You already created the Firebase project (`rbls-f3a9c`, Spark/free plan). One step left before anyone can use the app:
+
+1. Open the [Firebase console](https://console.firebase.google.com/) → your `RBLS` project.
+2. Left sidebar → **Firestore Database**. If you haven't created the database yet, click **Create database**, choose **Start in production mode**, pick any region, and finish.
+3. Go to the **Rules** tab.
+4. Delete everything in the editor and paste in the entire contents of `firestore.rules` from this folder.
+5. Click **Publish**.
+
+That's it — the rules are what actually decide who can read/write what; nothing else in the Firebase console needs to change. (Authentication is enabled automatically the first time someone signs up through the app's setup wizard, but you can pre-enable it yourself: **Authentication** → **Get started** → **Sign-in method** → enable **Email/Password**.)
+
+## 2. Put the app on GitHub Pages
+
+1. Create a new **public** GitHub repository (e.g. `alliance-hq`).
+2. Upload `index.html` to the root of that repo (drag-and-drop on github.com works fine, or `git add`/`commit`/`push` if you use git locally).
+3. In the repo, go to **Settings → Pages**.
+4. Under **Build and deployment → Source**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`, then **Save**.
+5. GitHub gives you a URL like `https://<your-username>.github.io/<repo-name>/` — that's the live app. It can take a minute or two to go live the first time.
+
+## 3. First-run setup (do this once, as yourself)
+
+1. Open the GitHub Pages URL. You'll land on a **"Stand up your alliance HQ"** screen.
+2. Alliance name / tag / tagline are pre-filled — adjust if you want.
+3. Enter your own email and choose a password. This becomes your officer login.
+4. Leave **"Import the existing roster"** checked — it loads your real 89-member roster, levels, power history, and the 5-person leadership chart in one shot, so nobody has to retype it.
+5. Click **Create alliance HQ**. You're now signed in as the first officer.
+
+## 4. Add other officers
+
+Anyone can open the site and use **Sign up** to create an account — but a brand-new account has *view-only* access until an existing officer grants it. To add someone:
+
+1. Ask them to open the site, sign up (or sign in), and open the **Account** panel — it shows their **UID** with a copy button.
+2. They send you that UID (Discord, in-game mail, whatever).
+3. As an officer, open **Admin panel → Admins**, paste their UID in, give it a label (their name), and grant it.
+4. They refresh the page — they now have full officer access.
+
+There's no limit on how many officers you add, and any officer can add or remove others from the same panel.
+
+## 5. Day-to-day use
+
+- **Everyone** (no login) can view the roster, activity charts, org chart, and events.
+- **Officers** (signed in + granted) can edit member power/level snapshots, mark members active/inactive, edit the org chart, log events, and change alliance settings.
+- **Bulk Update** (Admin panel) replaces the old screenshot-scanning flow — paste lines like `Name, Power, Level` (one member per line) after reading them off a screenshot, and it matches them to existing members (or offers to create new ones) before you confirm.
+- All edits sync live to everyone viewing the page — no publish/refresh step, no conflicts to merge by hand.
+
+## Notes / limits
+
+- Firebase's free **Spark plan** covers this comfortably for an alliance-sized roster (tens of thousands of reads/writes a day, for free). You won't need to upgrade.
+- The Firebase config in `index.html` (API key, project ID, etc.) is meant to be public — it's not a secret. The `firestore.rules` file is what actually protects the data, which is why step 1 above matters.
+- If you ever want to reset who has officer access, do it from **Admin panel → Admins** while signed in as an existing officer — there's intentionally no back door in the rules themselves.
